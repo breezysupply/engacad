@@ -1,0 +1,14 @@
+{
+  "name": "EngAcad labs",
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "22" }
+  },
+  "postCreateCommand": "python3 --version && git --version",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python"]
+    }
+  },
+  "hostRequirements": { "cpus": 2 }
+}

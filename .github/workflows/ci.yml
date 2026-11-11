@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      BASE_PATH: /${{ github.event.repository.name }}/
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - name: Build (GitHub Pages base path)
+        run: npm run build
+      - name: Lab script runs
+        run: python3 labs/week01-environment/check_env.py
+      - run: npx playwright install --with-deps chromium
+      - name: Browser e2e (production build)
+        run: npx playwright test
